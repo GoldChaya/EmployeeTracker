@@ -25,10 +25,10 @@ namespace HomeworkMay24.Data
             context.PotentialEmployee.Add(candidate);
             context.SaveChanges();
         }
-        public void UpdateCandidateStatus(PotentialEmployee candidate)
+        public void UpdateCandidateStatus(int id, Status status)
         {
             using var context = new EmployeeDataContext(_connectionString);
-            context.PotentialEmployee.FirstOrDefault(c => c.Id == candidate.Id).Status = candidate.Status;
+            context.PotentialEmployee.FirstOrDefault(c => c.Id == id).Status = status;
             context.SaveChanges();
         }
         public PotentialEmployee GetById(int id)
@@ -45,6 +45,11 @@ namespace HomeworkMay24.Data
                 Hired = context.PotentialEmployee.Count(c => c.Status == Status.Hired),
                 Declined = context.PotentialEmployee.Count(c => c.Status == Status.Declined),
             };
+        }
+        public List<PotentialEmployee> GetByStatus (Status status)
+        {
+            using var context = new EmployeeDataContext(_connectionString);
+            return context.PotentialEmployee.Where(p => p.Status == status).ToList();
         }
     }
 }

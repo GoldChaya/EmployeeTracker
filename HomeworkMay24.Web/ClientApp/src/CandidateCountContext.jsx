@@ -11,21 +11,23 @@ const CandidateCountContextComponent = ({ children }) => {
         });
     const refreshCandidateCounts = async () => {
         const { data } = await axios.get('/api/candidate/getcounts');
-        console.log(data);
         setCandidateCounts(data);
     }
     useEffect(() => {
         refreshCandidateCounts();
     }, []);
 
+    const value = {
+        candidateCounts,
+        refreshCandidateCounts
+    }
     return (
-        <CandidateCountContext.Provider value={{candidateCounts, refreshCandidateCounts}}>
+        <CandidateCountContext.Provider value={value}>
             {children}
         </CandidateCountContext.Provider>
     )
 }
-const useCandidateCount = () => {
-    return useContext(CandidateCountContext);
-}
+const useCandidateCount = () => useContext(CandidateCountContext);
+
 
 export { useCandidateCount, CandidateCountContextComponent };
